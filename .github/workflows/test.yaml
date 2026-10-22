@@ -1,0 +1,28 @@
+name: nslookup test
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: "target domain"
+        required: true
+      runs-on:
+        description: "Runner type"
+        required: true
+        default: "megatron-cn-plat-x64"
+        type: choice
+        options:
+          - megatron-cn-plat-x64
+          - megatron-cn-dev-x64
+          - megatron-lh-dev-x64
+          - megatron-cn-prod-x64
+
+jobs:
+  network-test:
+    runs-on: ${{ github.event.inputs.runs-on }}
+    steps:
+      - name: nslookup
+        run: |
+          echo "nslookup: ${{ github.event.inputs.domain }}"
+          echo "=========================================="
+          nslookup ${{ github.event.inputs.domain }}
